@@ -1,32 +1,33 @@
 import React, { useState, useContext } from 'react';
 
-// Create AuthContext
+// Create a context to manage authentication status
 const AuthContext = React.createContext();
 
-// AuthProvider component
+// AuthProvider component to wrap the application with the authentication context
 const AuthProvider = ({ children }) => {
   const [authenticated, setAuthenticated] = useState(false);
 
-  const toggleAuthenticated = () => {
-    setAuthenticated((prevAuthenticated) => !prevAuthenticated);
+  // Function to toggle authentication status
+  const toggleAuthentication = () => {
+    setAuthenticated(!authenticated);
   };
 
   return (
-    <AuthContext.Provider value={{ authenticated, toggleAuthenticated }}>
+    <AuthContext.Provider value={{ authenticated, toggleAuthentication }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-// Auth component
+// Auth component to display authentication status and checkbox
 const Auth = () => {
-  const { authenticated, toggleAuthenticated } = useContext(AuthContext);
+  const { authenticated, toggleAuthentication } = useContext(AuthContext);
 
   return (
     <div>
-      <h2>Authentication Status: {authenticated ? 'Authenticated' : 'Not Authenticated'}</h2>
+      <p className="authText">Authentication Status: {authenticated ? 'Authenticated' : 'Not Authenticated'}</p>
       <label>
-        <input type="checkbox" onChange={toggleAuthenticated} />
+        <input type="checkbox" onChange={toggleAuthentication} />
         I'm not a robot
       </label>
     </div>
@@ -34,15 +35,15 @@ const Auth = () => {
 };
 
 // App component
-function App() {
+const App = () => {
   return (
     <AuthProvider>
-      <div>
-        <h1>Authentication Flow</h1>
+      <div className="App">
+        <h1>Click on the checkbox to get authenticated</h1>
         <Auth />
       </div>
     </AuthProvider>
   );
-}
+};
 
 export default App;
